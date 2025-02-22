@@ -96,6 +96,19 @@ export default function NFTDetails({
     console.log(x);
   };
 
+  if (type === "nft" && nft?.owner !== account?.address) {
+    return (
+      <div className="min-h-screen p-6 max-w-6xl mx-auto">
+        <div className="flex flex-col items-center justify-center h-full">
+          <h1 className="text-2xl font-bold">You do not own this NFT</h1>
+          <Link href="/owned-nft">
+            <Button className="mt-4">Back to Your NFTs</Button>
+          </Link>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen p-6 max-w-6xl mx-auto">
       <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -155,9 +168,7 @@ export default function NFTDetails({
             <p className="text-gray-400">
               Owned by{" "}
               <span className="text-blue-500">
-                {type === "nft"
-                  ? nft!.owner
-                  : listing!.creatorAddress}
+                {type === "nft" ? nft!.owner : listing!.creatorAddress}
                 ...
               </span>
             </p>

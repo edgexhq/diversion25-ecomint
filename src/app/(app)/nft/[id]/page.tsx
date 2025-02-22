@@ -14,8 +14,6 @@ export default async function NFTIdPage({
     tokenId: BigInt(nftid),
   });
 
-  console.log(nft);
-
   const result = await ownerOf({
     contract: collectioncontract,
     tokenId: BigInt(nftid),

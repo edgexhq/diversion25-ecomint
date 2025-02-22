@@ -21,6 +21,5 @@ export default async function TreeCertificate({
     <div className="min-h-screen bg-white p-4 md:p-8">
       <Treecertificate details={treedetails.data} />
     </div>
-
   );
 }

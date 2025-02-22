@@ -36,22 +36,22 @@ export default function CreateNFT() {
     setIsGenerating(true);
     setIsImageGenerated(false);
     try {
-      // const res = await fetch(
-      //   `${apiUrl}?prompt=${encodeURIComponent(
-      //     aiPrompt
-      //   )}&model=flux-schnell`,
-      //   {
-      //     method: "GET",
-      //   }
-      // );
+      const res = await fetch(
+        `${apiUrl}?prompt=${encodeURIComponent(
+          aiPrompt
+        )}&model=flux-schnell`,
+        {
+          method: "GET",
+        }
+      );
 
-      // if (!res.ok) {
-      //   throw new Error("Failed to generate image");
-      // }
+      if (!res.ok) {
+        throw new Error("Failed to generate image");
+      }
 
-      // const blob = await res.blob();
-      // const url = URL.createObjectURL(blob);
-      // setImage(url);
+      const blob = await res.blob();
+      const url = URL.createObjectURL(blob);
+      setImage(url);
       const uuid = nanoid();
       console.log(uuid);
       setCustomQR(uuid);

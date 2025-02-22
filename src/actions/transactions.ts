@@ -8,7 +8,7 @@ export async function createTransaction({
   from,
   hash,
   name,
-  email
+  email,
 }: {
   orgId: string;
   amount: string;
@@ -24,7 +24,7 @@ export async function createTransaction({
       userWalletAddress: from,
       transactionAddress: hash,
       name,
-      email
+      email,
     },
   });
 
@@ -33,22 +33,27 @@ export async function createTransaction({
   }
 }
 
-export async function getTransactionsOfOrg(wallet: string) {
-  const org = await prisma.treePlantingOrg.findUnique({
-    where: {
-      wallet: wallet,
-    },
-  });
+export async function getTransactionsOfOrg(walletAddress: string) {
+  try {
+    const org = await prisma.treePlantingOrg.findUnique({
+      where: {
+        wallet: walletAddress,
+      },
+    });
 
-  if (!org) {
+    if (!org) {
+      throw new Error("Organization not found");
+    }
+
+    const transactions = await prisma.transactions.findMany({
+      where: {
+        status: "PENDING",
+      },
+    });
+    console.log("Fetched transactions:", transactions);
+    return transactions;
+  } catch (error) {
+    console.error("Error fetching transactions:", error);
     return [];
   }
-
-  const transactions = await prisma.transactions.findMany({
-    where: {
-      orgId: org.id,
-    },
-  });
-
-  return transactions;
 }

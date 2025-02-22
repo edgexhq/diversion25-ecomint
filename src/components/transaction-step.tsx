@@ -17,6 +17,7 @@ export interface FormDataType {
     orgId: string;
     name: string;
     email: string;
+    id: string; // Add ID field
   };
   tree: {
     name: string;
@@ -46,8 +47,9 @@ export function TransactionsStep({
       return;
     }
     async function fetchTransactions() {
+      console.log("Fetching transactions for wallet:", accnt!.address);
       const transaction = await getTransactionsOfOrg(accnt!.address);
-      console.log(transaction);
+      console.log("Fetched transactions:", transaction);
       setTransactions(transaction);
     }
     fetchTransactions();
@@ -65,13 +67,14 @@ export function TransactionsStep({
           userWalletAddress: selected.userWalletAddress,
           orgId: selected.orgId,
           name: selected.name,
-          email: selected.email
+          email: selected.email,
+          id: selected.id,
         },
         tree: {
           ...formData.tree,
-          name: formData.transaction.name || "",
-          userWalletAddress: formData.transaction.userWalletAddress || "",
-        }
+          name: selected.name || "",
+          userWalletAddress: selected.userWalletAddress || "",
+        },
       });
     }
   };

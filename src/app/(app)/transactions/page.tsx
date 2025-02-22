@@ -1,76 +1,110 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 
+import { Badge } from "@/components/ui/badge";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { Copy } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useActiveAccount } from "thirdweb/react";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 
-interface Transaction {
-  hash: string;
-  block_number: number;
-  from: string;
-  to: string;
-  value: string;
-  gas: string;
-  gas_price: string;
-  block_timestamp: number;
-  transaction_type: string;
-  nonce: string;
-  block_hash: string;
-  transaction_index: string;
-  is_error: string;
-  txreceipt_status: string;
-  input: string;
-  contract_address: string;
-  cumulative_gas_used: string;
-  gas_used: string;
-  confirmations: string;
-  method_id: string;
-  function_name: string;
-}
+const getTransactionType = (method: string) => {
+  if (method.includes("buyFromListing")) return "Buy From Listing";
+  if (method.includes("createListing")) return "Create Listing";
+  return "Transfer";
+};
 
-const TransactionsTable = ({ transactions }: { transactions: { data: Transaction[] } }) => {
+const shortenAddress = (address: string) =>
+  `${address.slice(0, 6)}...${address.slice(-4)}`;
+
+// Calculate the age of the transaction in hours and minutes ago from the current time in local timezone if not the same day as the transaction then it will display the days ago
+const calculateAge = (timestamp: string) => {
+  const date = new Date(Number(timestamp) * 1000);
+  const currentDate = new Date();
+  const diff = currentDate.getTime() - date.getTime();
+  const hours = Math.floor(diff / 1000 / 60 / 60);
+  const minutes = Math.floor((diff / 1000 / 60) % 60);
+  const days = Math.floor(hours / 24);
+
+  if (days > 0) {
+    return `${days} days ago`;
+  } else if (hours > 0) {
+    if (hours === 1) {
+      return `${hours} hour ago`;
+    }
+    return `${hours} hours ago`;
+  } else {
+    return `${minutes} minutes ago`;
+  }
+};
+
+const TransactionsTable = ({
+  transactions,
+}: {
+  transactions: Transaction[];
+}) => {
   return (
-    <div className="overflow-x-auto w-full max-w-6xl mx-auto p-4">
-      <Table>
+    <div className="border rounded-lg p-4 shadow-md">
+      <h2 className="text-lg font-semibold mb-2">Latest Transactions</h2>
+      <Table className="text-xs w-full">
         <TableHeader>
           <TableRow>
-            <TableHead>Hash</TableHead>
-            <TableHead>Block No</TableHead>
-            <TableHead>From</TableHead>
-            <TableHead>To</TableHead>
-            <TableHead>Value</TableHead>
-            <TableHead>Gas</TableHead>
-            <TableHead>Gas Price</TableHead>
-            <TableHead>Nonce</TableHead>
-            <TableHead>Block Hash</TableHead>
-            <TableHead>Tx Index</TableHead>
-            <TableHead>Error</TableHead>
-            <TableHead>Status</TableHead>
-            <TableHead>Confirmations</TableHead>
-            <TableHead>Method</TableHead>
-            <TableHead>Function</TableHead>
+            <TableCell>Transaction Hash</TableCell>
+            <TableCell>Method</TableCell>
+            <TableCell>Block</TableCell>
+            <TableCell>Age</TableCell>
+            <TableCell>From</TableCell>
+            <TableCell>To</TableCell>
+            <TableCell>Amount</TableCell>
+            <TableCell>Txn Fee</TableCell>
           </TableRow>
         </TableHeader>
         <TableBody>
-          {transactions?.data?.map((tx, index) => (
-            <TableRow key={index}>
-              <TableCell className="truncate max-w-xs">{tx.hash}</TableCell>
-              <TableCell>{tx.block_number}</TableCell>
-              <TableCell className="truncate max-w-xs">{tx.from}</TableCell>
-              <TableCell className="truncate max-w-xs">{tx.to}</TableCell>
-              <TableCell>{tx.value}</TableCell>
-              <TableCell>{tx.gas}</TableCell>
-              <TableCell>{tx.gas_price}</TableCell>
-              <TableCell>{tx.nonce}</TableCell>
-              <TableCell className="truncate max-w-xs">{tx.block_hash}</TableCell>
-              <TableCell>{tx.transaction_index}</TableCell>
-              <TableCell>{tx.is_error}</TableCell>
-              <TableCell>{tx.txreceipt_status}</TableCell>
-              <TableCell>{tx.confirmations}</TableCell>
-              <TableCell>{tx.method_id}</TableCell>
-              <TableCell>{tx.function_name}</TableCell>
+          {transactions.map((tx) => (
+            <TableRow key={tx.hash}>
+              <TableCell className="flex items-center gap-1">
+                <a
+                  href={`https://amoy.polygonscan.com/tx/${tx.hash}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-blue-500"
+                >
+                  {shortenAddress(tx.hash)}
+                </a>
+                <Copy
+                  className="w-4 h-4 cursor-pointer"
+                  onClick={() => navigator.clipboard.writeText(tx.hash)}
+                />
+              </TableCell>
+              <TableCell>
+                <Badge
+                  variant={
+                    getTransactionType(tx.functionName) === "Buy From Listing"
+                      ? "default"
+                      : getTransactionType(tx.functionName) === "Create Listing"
+                      ? "secondary"
+                      : "outline"
+                  }
+                >
+                  {getTransactionType(tx.functionName)}
+                </Badge>
+              </TableCell>
+              <TableCell>{tx.blockNumber}</TableCell>
+              <TableCell>
+                {calculateAge(tx.timeStamp)} <br />
+              </TableCell>
+              <TableCell>{shortenAddress(tx.from)}</TableCell>
+              <TableCell>
+                {tx.to ? shortenAddress(tx.to) : "Contract Creation"}
+              </TableCell>
+              <TableCell>{(Number(tx.value) / 1e18).toFixed(6)} POL</TableCell>
+              <TableCell>
+                {((Number(tx.gasUsed) * Number(tx.gasPrice)) / 1e18).toFixed(6)}
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>
@@ -80,7 +114,9 @@ const TransactionsTable = ({ transactions }: { transactions: { data: Transaction
 };
 
 export default function TransactionsPage() {
-  const [transactionHistory, setTransactionHistory] = useState<{ data: Transaction[] } | null>(null);
+  const [transactionHistory, setTransactionHistory] = useState<
+    Transaction[] | null
+  >(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const account = useActiveAccount();
@@ -98,29 +134,17 @@ export default function TransactionsPage() {
         if (data.status === "1") {
           const formattedTransactions = data.result.map((tx: any) => ({
             hash: tx.hash,
-            block_number: tx.blockNumber,
+            functionName: tx.functionName || "Transfer",
+            blockNumber: tx.blockNumber,
+            timeStamp: tx.timeStamp,
             from: tx.from,
             to: tx.to,
-            value: (Number(tx.value) / 10 ** 18).toFixed(6) + " ETH",
-            gas: tx.gas,
-            gas_price: tx.gasPrice,
-            block_timestamp: Number(tx.timeStamp),
-            transaction_type: tx.functionName || "Transfer",
-            nonce: tx.nonce,
-            block_hash: tx.blockHash,
-            transaction_index: tx.transactionIndex,
-            is_error: tx.isError,
-            txreceipt_status: tx.txreceipt_status,
-            input: tx.input,
-            contract_address: tx.contractAddress,
-            cumulative_gas_used: tx.cumulativeGasUsed,
-            gas_used: tx.gasUsed,
-            confirmations: tx.confirmations,
-            method_id: tx.methodId,
-            function_name: tx.functionName
+            value: tx.value,
+            gasUsed: tx.gasUsed,
+            gasPrice: tx.gasPrice,
           }));
 
-          setTransactionHistory({ data: formattedTransactions });
+          setTransactionHistory(formattedTransactions);
         } else {
           setError("Failed to fetch transactions.");
         }
@@ -139,7 +163,21 @@ export default function TransactionsPage() {
       <h2 className="text-2xl font-bold mb-4">Transaction History</h2>
       {loading && <p>Loading...</p>}
       {error && <p className="text-red-500">Error: {error}</p>}
-      {transactionHistory && <TransactionsTable transactions={transactionHistory} />}
+      {transactionHistory && (
+        <TransactionsTable transactions={transactionHistory} />
+      )}
     </div>
   );
+}
+
+interface Transaction {
+  hash: string;
+  functionName: string;
+  blockNumber: string;
+  timeStamp: string;
+  from: string;
+  to: string;
+  value: string;
+  gasUsed: string;
+  gasPrice: string;
 }

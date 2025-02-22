@@ -11,16 +11,6 @@ export interface OrganisationsProps {
     plantingArea: string;
     image?: string | null;
   }>;
-  wildlifeOrgs: Array<{
-    id: string;
-    name: string;
-    govId: string;
-    address: string;
-    wallet: string;
-    area: string;
-    noOfAnimals: number;
-    image?: string | null;
-  }>;
 }
 export default async function Explore() {
   const organisations: OrganisationsProps = await getAllOrgs();

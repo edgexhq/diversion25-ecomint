@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   Card,
   CardContent,
@@ -11,12 +10,7 @@ import {
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import TreePlantingForm from "@/components/treeOrgForm";
-import OtherNGOForm from "@/components/WildlifeOrg";
-import {
-  addTreePlantingOrg,
-  addWildlifeOrg,
-  getAccountFromAddress,
-} from "@/actions/form";
+import { addTreePlantingOrg, getAccountFromAddress } from "@/actions/form";
 import { toast } from "sonner";
 import dynamic from "next/dynamic";
 import { client } from "@/lib/client";
@@ -43,7 +37,6 @@ const wallets = [
 
 export default function NGORegistrationForm() {
   const router = useRouter();
-  const [activeTab, setActiveTab] = useState("tree-planting");
   const [formData, setFormData] = useState({
     name: "",
     govId: "",
@@ -76,32 +69,17 @@ export default function NGORegistrationForm() {
     e.preventDefault();
 
     try {
-      if (activeTab === "tree-planting") {
-        const result = await addTreePlantingOrg({
-          name: formData.name,
-          govId: formData.govId,
-          address: formData.address,
-          wallet: formData.wallet,
-          plantingArea: formData.plantingArea,
-          image: formData.image,
-        });
-        if (result.success) {
-          toast.success("Tree planting organization registered successfully!");
-          router.push("/org");
-        }
-      } else {
-        const result = await addWildlifeOrg({
-          name: formData.name,
-          govId: formData.govId,
-          address: formData.address,
-          area: formData.area,
-          wallet: formData.wallet,
-          noOfAnimals: formData.noOfAnimals,
-          image: formData.image,
-        });
-        if (result.success) {
-          toast.success("Wildlife organization registered successfully!");
-        }
+      const result = await addTreePlantingOrg({
+        name: formData.name,
+        govId: formData.govId,
+        address: formData.address,
+        wallet: formData.wallet,
+        plantingArea: formData.plantingArea,
+        image: formData.image,
+      });
+      if (result.success) {
+        toast.success("Tree planting organization registered successfully!");
+        router.push("/org");
       }
     } catch (error) {
       console.error("Error submitting form:", error);
@@ -149,26 +127,10 @@ export default function NGORegistrationForm() {
         </CardHeader>
         <CardContent>
           <div>
-            <Tabs defaultValue="tree-planting" onValueChange={setActiveTab}>
-              <TabsList className="grid w-full grid-cols-2">
-                <TabsTrigger value="tree-planting">
-                  Tree Planting Organization
-                </TabsTrigger>
-                <TabsTrigger value="wildlife-park">Other NGO</TabsTrigger>
-              </TabsList>
-              <TabsContent value="tree-planting">
-                <TreePlantingForm
-                  formData={formData}
-                  handleInputChange={handleInputChange}
-                />
-              </TabsContent>
-              <TabsContent value="wildlife-park">
-                <OtherNGOForm
-                  formData={formData}
-                  handleInputChange={handleInputChange}
-                />
-              </TabsContent>
-            </Tabs>
+            <TreePlantingForm
+              formData={formData}
+              handleInputChange={handleInputChange}
+            />
           </div>
           <Button
             type="submit"

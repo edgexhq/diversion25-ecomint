@@ -18,17 +18,6 @@ model TreePlantingOrg {
   Tree         Tree[]
 }
 
-model WildLifeOrg {
-  id          String  @id @default(auto()) @map("_id") @db.ObjectId
-  name        String  @unique
-  govId       String  @unique
-  address     String
-  image       String?
-  area        String
-  wallet      String  @unique
-  noOfAnimals Int
-}
-
 model Tree {
   id                    String   @id @default(auto()) @map("_id") @db.ObjectId
   name                  String

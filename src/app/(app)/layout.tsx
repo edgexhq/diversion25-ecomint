@@ -67,7 +67,7 @@ export default function AppLayout({
                   colors: {
                     accentText: "hsl(158.1 ,64.4% ,50%)",
                     accentButtonBg: "hsl(118, 100%, 63%)",
-                    primaryButtonBg: "hsl(158.1 ,64.4%, 50%)",
+                    primaryButtonBg: "hsl(142, 76%, 36%)",
                     accentButtonText: "hsl(0, 0%, 0%)",
                   },
                 })}

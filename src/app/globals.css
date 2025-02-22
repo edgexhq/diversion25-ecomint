@@ -87,3 +87,24 @@
     @apply bg-background text-foreground;
   }
 }
+
+.moon-glow {
+  filter: drop-shadow(0 0 1rem hsla(205, 100%, 90%, 0.6));
+}
+.sun-glow {
+  filter: drop-shadow(0 0 1rem hsla(55, 100%, 52%, 0.86));
+}
+
+::selection {
+  background: hsla(var(--primary));
+  color: hsla(var(--primary-foreground));
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: hsla(var(--muted));
+  border-radius: 1rem;
+}

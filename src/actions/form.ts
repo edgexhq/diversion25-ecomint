@@ -138,7 +138,7 @@ export async function addTree(data: {
       throw new Error("Invalid tree planting org ID");
     }
 
-    const result = await prisma.$transaction(async (tx) => {
+    const result = await prisma.$transaction(async (tx: any) => {
       const tree = await tx.tree.create({
         data: {
           ...data.tree,

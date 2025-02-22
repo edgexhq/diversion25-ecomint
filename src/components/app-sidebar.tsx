@@ -7,10 +7,10 @@ import {
   Command,
   FrameIcon,
   LayoutGridIcon,
-  PieChartIcon,
   Settings2,
   SquareTerminal,
   StoreIcon,
+  HandCoins,
   TreeDeciduous,
 } from "lucide-react";
 import * as React from "react";
@@ -69,9 +69,9 @@ const data = {
       icon: FrameIcon,
     },
     {
-      name: "Analytics",
-      url: "/analytics",
-      icon: PieChartIcon,
+      name: "Donate",
+      url: "/explore",
+      icon: HandCoins,
     },
   ],
   navMain: [

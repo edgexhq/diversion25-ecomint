@@ -45,7 +45,7 @@ const RegisterForTree = () => {
             animate={{ y: 0 }}
             exit={{ y: "-120%" }}
             staggerDuration={0.025}
-            splitLevelClassName="overflow-hidden pb-0.5 sm:pb-1 md:pb-1"
+            splitLevelClassName="overflow-hidden px-2 pb-0.5 sm:pb-1 md:pb-1"
             transition={{
               type: "spring",
               damping: 30,

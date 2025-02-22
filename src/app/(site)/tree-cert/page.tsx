@@ -1,5 +1,4 @@
 import Certificate from "@/components/new-certificate";
-import React from "react";
 
 const page = () => {
   return (

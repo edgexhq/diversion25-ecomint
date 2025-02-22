@@ -8,24 +8,24 @@ datasource db {
 }
 
 model TreePlantingOrg {
-  id           String @id @default(auto()) @map("_id") @db.ObjectId
-  name         String @unique
-  govId        String @unique
+  id           String  @id @default(auto()) @map("_id") @db.ObjectId
+  name         String  @unique
+  govId        String  @unique
   address      String
   image        String?
-  wallet       String @unique
+  wallet       String  @unique
   plantingArea String
   Tree         Tree[]
 }
 
 model WildLifeOrg {
-  id          String @id @default(auto()) @map("_id") @db.ObjectId
-  name        String @unique
-  govId       String @unique
+  id          String  @id @default(auto()) @map("_id") @db.ObjectId
+  name        String  @unique
+  govId       String  @unique
   address     String
   image       String?
   area        String
-  wallet      String @unique
+  wallet      String  @unique
   noOfAnimals Int
 }
 
@@ -67,4 +67,12 @@ model Transactions {
 enum Status {
   PENDING
   PLANTED
+}
+
+model User {
+  id            String   @id @default(auto()) @map("_id") @db.ObjectId
+  wallet        String   @unique
+  email         String   @unique
+  amountDonated String
+  rewards       String[]
 }

@@ -1,4 +1,4 @@
-import NFTDetails from "@/components/listing-details";
+import NFTDetails from "@/components/root/NFTDetails";
 import { marketcontract } from "@/lib/contracts";
 import { getListing } from "thirdweb/extensions/marketplace";
 

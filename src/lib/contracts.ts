@@ -7,14 +7,16 @@ export const contractAddress =
 export const collectionAddress =
   process.env.NEXT_PUBLIC_NFT_COLLECTION_CONTRACT_ADDRESS!;
 
+export const chainId = parseInt(process.env.NEXT_PUBLIC_CHAIN_ID!);
+
 export const marketcontract = getContract({
   client: client,
   address: contractAddress,
-  chain: defineChain(11155111),
+  chain: defineChain(chainId),
 });
 
 export const collectioncontract = getContract({
   client: client,
   address: collectionAddress,
-  chain: defineChain(11155111),
+  chain: defineChain(chainId),
 });

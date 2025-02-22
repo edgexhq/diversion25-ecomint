@@ -6,4 +6,4 @@ export const collectionAddress =
 
 export const chainId = parseInt(process.env.NEXT_PUBLIC_CHAIN_ID!);
 
-export const ETH_TO_USD_RATE = 3000; // This is a mock rate. In a real app, you'd fetch this dynamically.
+export const MATIC_TO_USD_RATE = 0.33;

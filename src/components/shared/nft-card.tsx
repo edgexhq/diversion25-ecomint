@@ -53,7 +53,7 @@ export default function NFTCard({
               <div className="text-xs text-gray-400">Current price</div>
               <div className="flex items-baseline gap-2">
                 <div className="text-lg font-bold text-emerald-400">
-                  {priceInETH} ETH
+                  {priceInETH} MATIC
                 </div>
                 {/* <div className="text-xs text-gray-400">${usdPrice}</div> */}
               </div>

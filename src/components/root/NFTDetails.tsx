@@ -19,6 +19,7 @@ import { chainId, collectionAddress, contractAddress } from "@/lib/constants";
 import { defineChain, NFT, toEther } from "thirdweb";
 import { Label } from "../ui/label";
 import { Input } from "../ui/input";
+import { DateTimePicker } from "../ui/date-time";
 
 function formatNumber(num: bigint) {
   return toEther(num);
@@ -35,6 +36,7 @@ export default function NFTDetails({
 }) {
   const account = useActiveAccount();
   const [price, setPrice] = useState("");
+  const [date, setDate] = useState<Date>();
 
   const [timeLeft, setTimeLeft] = useState<{
     days?: number;
@@ -78,25 +80,7 @@ export default function NFTDetails({
     return () => clearTimeout(interval);
   }, [listing, listing?.endTimeInSeconds]);
 
-  // const handleBuyButtonClick = async () => {
-  //   setLoading(true);
-  //   if (!account) {
-  //     toast.error("Please connect your wallet");
-  //     setLoading(false);
-  //     return;
-  //   }
-
-  //   const transaction = buyFromListing({
-  //     contract: marketcontract,
-  //     listingId: BigInt(listing!.id),
-  //     quantity: 1n,
-  //     recipient: listing!.creatorAddress,
-  //   });
-
-  //   const x = await sendAndConfirmTransaction({ transaction, account });
-  //   console.log(x);
-  //   setLoading(false);
-  // };
+  const start = new Date(Number(listing?.startTimeInSeconds) * 1000).toLocaleString()
 
   if (type === "nft" && nft?.owner !== account?.address) {
     return (
@@ -141,19 +125,7 @@ export default function NFTDetails({
             {type === "listed" && listing && (
               <div className="flex items-center gap-2 mt-4 text-gray-400">
                 <span>Listing started at</span>
-                <span className="text-sm">
-                  {new Date(Number(listing.startTimeInSeconds) * 1000)
-                    .toLocaleString("en-US", {
-                      year: "numeric",
-                      month: "short",
-                      day: "numeric",
-                      hour: "2-digit",
-                      minute: "2-digit",
-                      second: "2-digit",
-                      timeZoneName: "short",
-                    })
-                    .replace(",", "")}
-                </span>
+                <span className="text-sm">{start}</span>
               </div>
             )}
           </Card>
@@ -252,7 +224,7 @@ export default function NFTDetails({
             <div className="flex items-baseline gap-2 mt-2">
               <span className="text-2xl font-bold">
                 {type === "listed" ? formatNumber(listing!.pricePerToken) : 0}{" "}
-                ETH
+                MATIC
               </span>
               <span className="text-gray-400">
                 $
@@ -264,17 +236,25 @@ export default function NFTDetails({
               </span>
             </div>
             {type === "nft" && (
-              <div className="space-y-2 mt-3">
-                <Label htmlFor="currentPrice" className="text-gray-300">
-                  Selling Price
-                </Label>
-                <Input
-                  id="currentPrice"
-                  placeholder="Enter a price"
-                  value={price}
-                  onChange={(e) => setPrice(e.target.value)}
-                  max={60}
-                />
+              <div className="flex gap-4 mt-4">
+                <div className="space-y-2 mt-3 w-full">
+                  <Label htmlFor="currentPrice" className="text-gray-300">
+                    Selling Price
+                  </Label>
+                  <Input
+                    id="currentPrice"
+                    placeholder="Enter a price"
+                    value={price}
+                    onChange={(e) => setPrice(e.target.value)}
+                    max={60}
+                  />
+                </div>
+                <div className="space-y-2 mt-3 w-full">
+                  <Label htmlFor="currentPrice" className="text-gray-300">
+                    Listing end data
+                  </Label>
+                  <DateTimePicker date={date} setDate={setDate} />
+                </div>
               </div>
             )}
             <div className="grid grid-cols-2 gap-4 mt-4">
@@ -297,7 +277,8 @@ export default function NFTDetails({
                   pricePerToken={price}
                   contractAddress={contractAddress}
                   assetContractAddress={collectionAddress}
-                  disabled={!price}
+                  disabled={!price || !date}
+                  endTimestamp={date}
                   theme={darkTheme({
                     colors: {
                       accentText: "hsl(158.1 ,64.4% ,50%)",

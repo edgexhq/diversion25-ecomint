@@ -17,7 +17,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning className="dark">
       <body className={`${sora.className} ${inter.variable}`}>
         <ThemeProvider attribute="class" defaultTheme="dark">
           <ThirdwebProvider>{children}</ThirdwebProvider>

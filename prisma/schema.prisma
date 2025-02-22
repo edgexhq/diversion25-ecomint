@@ -1,0 +1,70 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model TreePlantingOrg {
+  id           String @id @default(auto()) @map("_id") @db.ObjectId
+  name         String @unique
+  govId        String @unique
+  address      String
+  image        String?
+  wallet       String @unique
+  plantingArea String
+  Tree         Tree[]
+}
+
+model WildLifeOrg {
+  id          String @id @default(auto()) @map("_id") @db.ObjectId
+  name        String @unique
+  govId       String @unique
+  address     String
+  image       String?
+  area        String
+  wallet      String @unique
+  noOfAnimals Int
+}
+
+model Tree {
+  id                    String   @id @default(auto()) @map("_id") @db.ObjectId
+  name                  String
+  species               String
+  latitude              String
+  longitude             String
+  plantedAt             DateTime
+  treePlantingOrgId     String   @db.ObjectId
+  treePlantingOrgWallet String
+  carbonOffset          Float
+  userWalletAddress     String
+
+  transaction     Transactions?   @relation(fields: [transactionsId], references: [id])
+  transactionId   String?         @unique @db.ObjectId
+  imgUrl          String
+  TreePlantingOrg TreePlantingOrg @relation(fields: [treePlantingOrgId], references: [id])
+  transactionsId  String?         @db.ObjectId
+}
+
+model Transactions {
+  id                 String   @id @default(auto()) @map("_id") @db.ObjectId
+  amount             String
+  name               String
+  email              String
+  date               DateTime @default(now())
+  transactionAddress String
+  userWalletAddress  String
+  status             Status   @default(PENDING)
+  orgId              String
+
+  // tree   Tree   @relation(fields: [treeId], references: [id], onDelete: Cascade)
+  treeId String?
+  Tree   Tree[]
+}
+
+enum Status {
+  PENDING
+  PLANTED
+}

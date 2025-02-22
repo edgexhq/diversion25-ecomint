@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 import { getAccountFromAddress } from "@/actions/form";
 import { defineChain } from "thirdweb";
 import { client } from "@/lib/client";
+import { chainId } from "@/lib/constants";
 
 const TreeBanner = () => {
   const [name, setName] = useState<string | undefined>("");
@@ -15,7 +16,7 @@ const TreeBanner = () => {
   const address = accnt?.address;
 
   const { data } = useWalletBalance({
-    chain: defineChain(11155111),
+    chain: defineChain(chainId),
     address: accnt?.address || "",
     client: client,
   });

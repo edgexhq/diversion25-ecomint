@@ -8,6 +8,7 @@ import {
   DialogHeader,
   DialogTrigger,
 } from "../ui/dialog";
+import confetti from "canvas-confetti";
 import { useState } from "react";
 import { Button } from "../ui/button";
 import { useActiveAccount } from "thirdweb/react";
@@ -23,7 +24,15 @@ import { client } from "@/lib/client";
 import { createTransaction } from "@/actions/transactions";
 import { Label } from "../ui/label";
 import { Input } from "../ui/input";
-import { Loader } from "lucide-react";
+import { ArrowUpRight, Link2, Loader, X } from "lucide-react";
+import {
+  AlertDialog,
+  AlertDialogContent,
+  AlertDialogHeader,
+} from "../ui/alert-dialog";
+import Link from "next/link";
+import Image from "next/image";
+import { Badge } from "../ui/badge";
 
 interface OrgProps {
   id: string;
@@ -42,6 +51,8 @@ export default function OrgCard({ org }: { org: OrgProps }) {
   const [email, setEmail] = useState<string>("");
   const [price, setPrice] = useState<string>("0");
   const [loading, setLoading] = useState(false);
+
+  const [isOpen, setIsOpen] = useState(false);
 
   if (!account) {
     toast.error("Please connect your wallet to donate");
@@ -72,6 +83,12 @@ export default function OrgCard({ org }: { org: OrgProps }) {
       console.log(newTransaction);
       setLoading(false);
       setOpen(false);
+      confetti({
+        particleCount: 100,
+        spread: 70,
+        origin: { y: 0.6 },
+      });
+      setIsOpen(true);
     });
   };
 
@@ -147,8 +164,9 @@ export default function OrgCard({ org }: { org: OrgProps }) {
               </div>
             </DialogDescription>
             <DialogFooter className="flex flex-row items-center justify-between">
-              <Button onClick={handleDonate}>Donate
-                {loading && (<Loader className="w-6 h-6 animate-spin" />)}
+              <Button onClick={handleDonate}>
+                Donate
+                {loading && <Loader className="w-6 h-6 animate-spin" />}
               </Button>
               <Button variant="secondary" onClick={() => setOpen(false)}>
                 Close
@@ -156,6 +174,72 @@ export default function OrgCard({ org }: { org: OrgProps }) {
             </DialogFooter>
           </DialogContent>
         </Dialog>
+
+        <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
+          <AlertDialogContent className="max-w-2xl bg-gradient-to-b from-[#1A1A1A] to-[#121212] border-gray-800 shadow-2xl rounded-xl overflow-hidden">
+            <AlertDialogHeader className="relative">
+              <Button
+                variant="ghost"
+                className="absolute right-0 top-0 text-gray-400 hover:text-white"
+                onClick={() => setIsOpen(false)}
+              >
+                <X className="w-5 h-5" />
+              </Button>
+            </AlertDialogHeader>
+
+            {/* Embed Link Section */}
+            <div className="space-y-2 mb-4">
+              <Image
+                src="/success.gif"
+                alt="Success"
+                width={300}
+                height={300}
+                className="rounded-lg mx-auto"
+              />
+            </div>
+
+            <div className="space-y-4 mb-4">
+              <h1 className="text-4xl font-bold text-center">Thank you!</h1>
+              <p className="text-center text-gray-400 max-w-md mx-auto">
+                Your donation has been successfully processed and your XP has been updated
+              </p>
+
+              {/* Current Level */}
+              <div className="flex flex-row items-center justify-center gap-4">
+                <h1 className="text-2xl font-bold">Currently at: </h1>
+                <Badge variant="default" className="text-white h-6 px-6 py-2 text-md">Level 1</Badge>
+              </div>
+
+            </div>
+
+            {/* Download Files Section */}
+            <div className="space-y-2 mb-4 mx-auto">
+              <Link href="/leaderboard">
+                <Button variant="secondary">
+                  Go to leaderboard <ArrowUpRight size={16} className="ml-2" />
+                </Button>
+              </Link>
+            </div>
+
+            {/* Guide Button */}
+            <div className="flex justify-between items-center">
+              <Link
+                href="/"
+                className="text-gray-400 inline-flex items-center gap-2 hover:text-white transition-colors text-sm py-2 h-auto"
+              >
+                Home <Link2 />
+              </Link>
+
+              <Button
+                variant="ghost"
+                onClick={() => setIsOpen(false)}
+                className="text-gray-400 hover:text-white transition-colors text-sm py-2 h-auto"
+              >
+                Close
+              </Button>
+            </div>
+          </AlertDialogContent>
+        </AlertDialog>
       </div>
     </div>
   );

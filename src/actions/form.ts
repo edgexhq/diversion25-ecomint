@@ -42,49 +42,6 @@ export async function addTreePlantingOrg(data: {
   }
 }
 
-export async function addWildlifeOrg(data: {
-  name: string;
-  govId: string;
-  address: string;
-  area: string;
-  wallet: string;
-  noOfAnimals: number;
-  image: string;
-}) {
-  try {
-    if (
-      !data ||
-      !data.name ||
-      !data.govId ||
-      !data.address ||
-      !data.area ||
-      !data.wallet ||
-      typeof data.noOfAnimals !== "number" ||
-      !data.image
-    ) {
-      throw new Error("Missing required fields");
-    }
-
-    const org = await prisma.wildLifeOrg.create({
-      data: {
-        name: data.name,
-        govId: data.govId,
-        address: data.address,
-        area: data.area,
-        wallet: data.wallet,
-        noOfAnimals: data.noOfAnimals,
-        image: data.image,
-      },
-    });
-    return { success: true, data: org };
-  } catch (error) {
-    const errorMessage =
-      error instanceof Error ? error.message : "Unknown error occurred";
-    console.error("Error creating wildlife org:", { error: errorMessage });
-    return { success: false, error: errorMessage };
-  }
-}
-
 export async function getAccountFromAddress(walletAdd: string) {
   try {
     if (!walletAdd) {
@@ -104,10 +61,8 @@ export async function getAccountFromAddress(walletAdd: string) {
 
 export async function getAllOrgs() {
   const treeorgs = await prisma.treePlantingOrg.findMany();
-  const wildlifeorgs = await prisma.wildLifeOrg.findMany();
   const orgs = {
     treePlantingOrgs: treeorgs,
-    wildlifeOrgs: wildlifeorgs,
   };
   return orgs;
 }

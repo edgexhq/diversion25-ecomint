@@ -23,7 +23,7 @@ export async function POST(req: Request) {
   try {
     const { data, error } = await resend.emails.send({
       from: `EcoMint <hi@${process.env.RESEND_DOMAIN}>`,
-      to: ["xevenbiswas@gmail.com", email],
+      to: [email],
       subject: "Hello world",
       html: `
 <body

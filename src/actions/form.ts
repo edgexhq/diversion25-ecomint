@@ -126,8 +126,9 @@ export async function addTree(data: {
     amount: string;
     transactionAddress: string;
     userWalletAddress: string;
-    name: string; // Add name field
-    email: string; // Add email field
+    name: string;
+    email: string;
+    id: string;
   };
   treePlantingOrgId: string;
 }) {
@@ -139,28 +140,27 @@ export async function addTree(data: {
     }
 
     const result = await prisma.$transaction(async (tx: any) => {
+      // First create the tree with the transaction connection
       const tree = await tx.tree.create({
         data: {
           ...data.tree,
-          treePlantingOrgId: accntData.data?.id || "",
+          treePlantingOrgId: accntData.data?.id,
           treePlantingOrgWallet: data.treePlantingOrgId,
+          transactionId: data.transaction.id, // Connect the tree to the transaction
         },
       });
 
-      const transaction = await tx.transactions.create({
+      // Then update the transaction status
+      const updatedTransaction = await tx.transactions.update({
+        where: {
+          id: data.transaction.id,
+        },
         data: {
-          amount: data.transaction.amount,
-          transactionAddress: data.transaction.transactionAddress,
-          userWalletAddress: data.transaction.userWalletAddress,
-          orgId: accntData.data?.id || "",
-          treeId: tree.id,
           status: "PLANTED",
-          name: data.transaction.name, // Add name
-          email: data.transaction.email, // Add email
         },
       });
 
-      return { tree, transaction };
+      return { tree, transaction: updatedTransaction };
     });
 
     return { success: true, data: result };

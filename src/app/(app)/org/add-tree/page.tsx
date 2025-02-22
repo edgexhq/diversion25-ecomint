@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 "use client";
 
 import { useState } from "react";
@@ -45,6 +46,7 @@ export default function StepWiseForm() {
       orgId: "",
       name: "",
       email: "",
+      id: "",
     },
     tree: {
       name: "",
@@ -102,7 +104,7 @@ export default function StepWiseForm() {
     if (!imageUri) {
       throw new Error("Error uploading image to IPFS");
     }
-    
+
     const mintRes = await fetch("/api/mint", {
       method: "POST",
       headers: {
@@ -111,7 +113,9 @@ export default function StepWiseForm() {
       body: JSON.stringify({
         nftImage: imageUri,
         address: formData.transaction.userWalletAddress,
-        name: `The Modern Earth God Lvl ${getRating(parseFloat(formData.transaction.amount))}`,
+        name: `The Modern Earth God Lvl ${getRating(
+          parseFloat(formData.transaction.amount)
+        )}`,
         description: xd,
       }),
     });
@@ -158,6 +162,7 @@ export default function StepWiseForm() {
           carbonOffset: Number(formData.tree.carbonOffset),
         },
         transaction: {
+          id: formData.transaction.id,
           amount: formData.transaction.amount,
           transactionAddress: formData.transaction.transactionAddress,
           userWalletAddress: formData.transaction.userWalletAddress,
@@ -166,7 +171,6 @@ export default function StepWiseForm() {
         },
         treePlantingOrgId: formData.transaction.orgId,
       });
-      
 
       if (!result.success) {
         throw new Error(result.error);
@@ -180,7 +184,7 @@ export default function StepWiseForm() {
           },
           body: JSON.stringify({
             certificateId: result.data.tree.id,
-            email: "subha9.5roy350@gmail.com",
+            email: formData.transaction.email,
             name: formData.tree.name,
             certificateUrl:
               "https://ecomintx.vercel.app/tree/" + result.data.tree.id,
@@ -189,7 +193,6 @@ export default function StepWiseForm() {
             carbonOffset: formData.tree.carbonOffset,
           }),
         });
-        router.push("/tree/" + result.data.tree.id);
         router.push("/tree/" + result.data.tree.id);
       }
     } catch (error) {

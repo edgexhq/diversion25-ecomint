@@ -105,7 +105,7 @@ export default function OrgCard({ org }: { org: OrgProps }) {
         <div>
           <h1 className="text-2xl font-bold">{org.name}</h1>
           <p className="text-gray-500 text-sm">
-            At
+            At {" "}
             {org.address}
           </p>
         </div>

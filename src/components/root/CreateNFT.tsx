@@ -12,7 +12,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import { client } from "@/lib/client";
 import { upload } from "thirdweb/storage";
-import { randomUUID } from "crypto";
+import { nanoid } from 'nanoid';
 import { useActiveAccount } from "thirdweb/react";
 import html2canvas from "html2canvas";
 
@@ -36,23 +36,24 @@ export default function CreateNFT() {
     setIsGenerating(true);
     setIsImageGenerated(false);
     try {
-      const res = await fetch(
-        `${apiUrl}?prompt=${encodeURIComponent(
-          aiPrompt
-        )}&model=flux-schnell`,
-        {
-          method: "GET",
-        }
-      );
+      // const res = await fetch(
+      //   `${apiUrl}?prompt=${encodeURIComponent(
+      //     aiPrompt
+      //   )}&model=flux-schnell`,
+      //   {
+      //     method: "GET",
+      //   }
+      // );
 
-      if (!res.ok) {
-        throw new Error("Failed to generate image");
-      }
+      // if (!res.ok) {
+      //   throw new Error("Failed to generate image");
+      // }
 
-      const blob = await res.blob();
-      const url = URL.createObjectURL(blob);
-      setImage(url);
-      const uuid = randomUUID();
+      // const blob = await res.blob();
+      // const url = URL.createObjectURL(blob);
+      // setImage(url);
+      const uuid = nanoid();
+      console.log(uuid);
       setCustomQR(uuid);
     } catch (error) {
       console.error(error);

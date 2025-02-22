@@ -1,7 +1,6 @@
 import { LogoMark } from "@/components/logo";
 import { Button } from "@/components/ui/button";
 import { Play } from "lucide-react";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { OrganisationsProps } from "@/app/(app)/explore/page";
 import OrgCard from "./shared/orgcard";
 
@@ -38,39 +37,12 @@ export default function ExploreOrgs({
         </div>
       </div>
       {/* Tabs */}
-      <Tabs defaultValue="treePlantingOrgs">
-        <TabsList className="grid w-full max-w-3xl mt-4 grid-cols-2">
-          <TabsTrigger value="wildlifeOrgs">
-            Wildlife Reservers & Sanctuaries
-          </TabsTrigger>
-          <TabsTrigger value="treePlantingOrgs">
-            Tree Plantation Organisations
-          </TabsTrigger>
-        </TabsList>
-        <TabsContent value="treePlantingOrgs">
-          <div className="grid grid-cols-1 gap-6 mt-6 sm:grid-cols-2 lg:grid-cols-3">
-            {organisations &&
-              organisations.treePlantingOrgs.map((org) => (
-                <OrgCard key={org.id} org={org} />
-              ))}
-          </div>
-        </TabsContent>
-        <TabsContent value="wildlifeOrgs">
-          {organisations &&
-            organisations.wildlifeOrgs.map((org) => (
-              <div
-                key={org.id}
-                className="flex gap-4 p-4 border border-primary/10 rounded-lg"
-              >
-                <div className="w-20 h-20 bg-primary/10 rounded-full"></div>
-                <div>
-                  <h3 className="text-lg font-bold">{org.name}</h3>
-                  <p className="text-muted-foreground">{org.noOfAnimals}</p>
-                </div>
-              </div>
-            ))}
-        </TabsContent>
-      </Tabs>
+      <div className="grid grid-cols-1 gap-6 mt-6 sm:grid-cols-2 lg:grid-cols-3 max-w-6xl mx-auto">
+        {organisations &&
+          organisations.treePlantingOrgs.map((org) => (
+            <OrgCard key={org.id} org={org} />
+          ))}
+      </div>
     </div>
   );
 }

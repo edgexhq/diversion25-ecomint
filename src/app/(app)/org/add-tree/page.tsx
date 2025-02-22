@@ -10,34 +10,13 @@ import { TreePlantingStep } from "@/components/tree-planting-step";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { addTree } from "@/actions/form";
-import { nanoid } from "nanoid";
-import { QRCodeSVG } from "qrcode.react";
-import { upload } from "thirdweb/storage";
-import html2canvas from "html2canvas";
-import { client } from "@/lib/client";
-import { useActiveAccount } from "thirdweb/react";
-import { Loader } from "lucide-react";
 
-const xd =
-  "The Modern Earth God is a non-profit organization that plants trees and helps to reduce carbon emissions. Support them by planting a tree with them.";
-
-const getRating = (amount: number): number => {
-  if (amount > 0.00005) return 5;
-  if (amount > 0.000001) return 4;
-  if (amount > 0.0000005) return 3;
-  if (amount > 0.0000001) return 2;
-  if (amount > 0.00000005) return 1;
-  return 0;
-};
-
-const steps = ["Transactions", "Tree Planting Details", "GWT"];
+const steps = ["Transactions", "Tree Planting Details"];
 
 export default function StepWiseForm() {
-  const account = useActiveAccount();
   const router = useRouter();
   const [currentStep, setCurrentStep] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
-  const [customQR, setCustomQR] = useState("");
   const [formData, setFormData] = useState({
     transaction: {
       amount: "",
@@ -66,68 +45,6 @@ export default function StepWiseForm() {
 
   const handlePrevious = () => {
     setCurrentStep((prev) => Math.max(prev - 1, 0));
-  };
-
-  const [isMinting, setIsMinting] = useState(false);
-
-  const handleMint = async () => {
-    if (!account) {
-      toast.error("Please connect your wallet to mint NFT");
-      setIsMinting(false);
-      return;
-    }
-
-    setCustomQR(nanoid());
-
-    const element = document.getElementById("ai-image");
-    if (!element) {
-      throw new Error("Image container not found");
-    }
-
-    // Capture the entire div as an image
-    const canvas = await html2canvas(element, { useCORS: true });
-    const blob = await new Promise<Blob | null>((resolve) =>
-      canvas.toBlob((blob) => resolve(blob), "image/png")
-    );
-
-    if (!blob) {
-      throw new Error("Error generating image blob");
-    }
-
-    const file = new File([blob], "nft-image.png", { type: "image/png" });
-
-    const imageUri = await upload({
-      client: client,
-      files: [file],
-    });
-
-    if (!imageUri) {
-      throw new Error("Error uploading image to IPFS");
-    }
-
-    const mintRes = await fetch("/api/mint", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        nftImage: imageUri,
-        address: formData.transaction.userWalletAddress,
-        name: `The Modern Earth God Lvl ${getRating(
-          parseFloat(formData.transaction.amount)
-        )}`,
-        description: xd,
-      }),
-    });
-
-    if (!mintRes.ok) {
-      setIsMinting(false);
-      throw new Error("Failed to mint NFT");
-    }
-
-    toast.success("NFT minted successfully");
-    setCustomQR("");
-    setIsMinting(false);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -203,8 +120,6 @@ export default function StepWiseForm() {
     }
   };
 
-  const rate = getRating(parseFloat(formData.transaction.amount));
-
   return (
     <form onSubmit={handleSubmit} className="w-full max-w-4xl mx-auto p-8">
       <Card>
@@ -255,72 +170,6 @@ export default function StepWiseForm() {
                   formData={formData}
                   setFormData={setFormData}
                 />
-              )}
-              {currentStep === 2 && (
-                <div className="flex my-8 flex-col items-center justify-center space-y-4">
-                  <div className="flex gap-x-4 items-center justify-start space-y-4">
-                    <div className="relative flex-1" id="ai-image">
-                      {rate === 5 ? (
-                        <img
-                          src="/5.png"
-                          alt="GWT"
-                          className="max-w-80 w-full h-auto rounded-lg"
-                        />
-                      ) : rate === 4 ? (
-                        <img
-                          src="/4.png"
-                          alt="GWT"
-                          className="max-w-80 w-full h-auto rounded-lg"
-                        />
-                      ) : rate === 3 ? (
-                        <img
-                          src="/3.png"
-                          alt="GWT"
-                          className="max-w-80 w-full h-auto rounded-lg"
-                        />
-                      ) : rate === 2 ? (
-                        <img
-                          src="/2.png"
-                          alt="GWT"
-                          className="max-w-80 w-full h-auto rounded-lg"
-                        />
-                      ) : (
-                        <img
-                          src="/1.png"
-                          alt="GWT"
-                          className="max-w-80 w-full h-auto rounded-lg"
-                        />
-                      )}
-                      <div className="absolute w-fit bottom-2 right-2">
-                        <QRCodeSVG
-                          value={customQR}
-                          className="w-10 h-10 rounded-base"
-                          fgColor="#ffffff"
-                          bgColor="transparent"
-                        />
-                      </div>
-                    </div>
-                    <div className="flex flex-1 flex-col items-start justify-center space-y-4">
-                      <h3 className="text-lg font-semibold">
-                        The Modern Earth God Lvl{" "}
-                        {getRating(parseFloat(formData.transaction.amount))}
-                      </h3>
-                      <p className="text-sm text-muted-foreground">
-                        The Modern Earth God is a non-profit organization that
-                        plants trees and helps to reduce carbon emissions.
-                        Support them by planting a tree with them.
-                      </p>
-                      <Button
-                        type="button"
-                        onClick={handleMint}
-                        disabled={isMinting}
-                      >
-                        Mint NFT{" "}
-                        {isMinting && <Loader className="ml-2 animate-spin" />}
-                      </Button>
-                    </div>
-                  </div>
-                </div>
               )}
             </motion.div>
           </AnimatePresence>

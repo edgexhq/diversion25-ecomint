@@ -80,9 +80,9 @@ const TransactionsTable = ({ transactions }: { transactions: { data: Transaction
 };
 
 export default function TransactionsPage() {
-  const [transactionHistory, setTransactionHistory] = useState(null);
+  const [transactionHistory, setTransactionHistory] = useState<{ data: Transaction[] } | null>(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState<string | null>(null);
   const account = useActiveAccount();
   const walletAddress = account?.address;
 

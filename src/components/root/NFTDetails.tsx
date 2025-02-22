@@ -4,8 +4,9 @@ import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Eye, GamepadIcon, ArrowRight } from "lucide-react";
-import { buyFromListing, DirectListing } from "thirdweb/extensions/marketplace";
+import { DirectListing } from "thirdweb/extensions/marketplace";
 import {
+  BuyDirectListingButton,
   CreateDirectListingButton,
   darkTheme,
   MediaRenderer,
@@ -13,13 +14,11 @@ import {
 } from "thirdweb/react";
 import { client } from "@/lib/client";
 import { Badge } from "@/components/ui/badge";
-import { toast } from "sonner";
 import Link from "next/link";
 import { chainId, collectionAddress, contractAddress } from "@/lib/constants";
-import { defineChain, NFT, sendAndConfirmTransaction, toEther } from "thirdweb";
+import { defineChain, NFT, toEther } from "thirdweb";
 import { Label } from "../ui/label";
 import { Input } from "../ui/input";
-import { marketcontract } from "@/lib/contracts";
 
 function formatNumber(num: bigint) {
   return toEther(num);
@@ -79,22 +78,25 @@ export default function NFTDetails({
     return () => clearTimeout(interval);
   }, [listing, listing?.endTimeInSeconds]);
 
-  const handleBuyButtonClick = async () => {
-    if (!account) {
-      toast.error("Please connect your wallet");
-      return;
-    }
+  // const handleBuyButtonClick = async () => {
+  //   setLoading(true);
+  //   if (!account) {
+  //     toast.error("Please connect your wallet");
+  //     setLoading(false);
+  //     return;
+  //   }
 
-    const transaction = buyFromListing({
-      contract: marketcontract,
-      listingId: BigInt(listing!.id),
-      quantity: 1n,
-      recipient: listing!.creatorAddress,
-    });
+  //   const transaction = buyFromListing({
+  //     contract: marketcontract,
+  //     listingId: BigInt(listing!.id),
+  //     quantity: 1n,
+  //     recipient: listing!.creatorAddress,
+  //   });
 
-    const x = await sendAndConfirmTransaction({ transaction, account });
-    console.log(x);
-  };
+  //   const x = await sendAndConfirmTransaction({ transaction, account });
+  //   console.log(x);
+  //   setLoading(false);
+  // };
 
   if (type === "nft" && nft?.owner !== account?.address) {
     return (
@@ -277,13 +279,15 @@ export default function NFTDetails({
             )}
             <div className="grid grid-cols-2 gap-4 mt-4">
               {type === "listed" && listing && (
-                <Button
-                  className="w-full"
-                  onClick={handleBuyButtonClick}
-                  disabled={!account}
+                <BuyDirectListingButton
+                  contractAddress={contractAddress} // the marketplace contract
+                  chain={defineChain(chainId)}
+                  client={client}
+                  listingId={BigInt(listing.id)}
+                  quantity={1n}
                 >
                   Buy NFT
-                </Button>
+                </BuyDirectListingButton>
               )}
               {type === "nft" && nft && (
                 <CreateDirectListingButton

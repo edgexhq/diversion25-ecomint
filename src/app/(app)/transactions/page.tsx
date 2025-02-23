@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/table";
 import { Copy } from "lucide-react";
 import { useEffect, useState } from "react";
+import { toast } from "sonner";
 import { useActiveAccount } from "thirdweb/react";
 
 const getTransactionType = (method: string) => {
@@ -77,7 +78,10 @@ const TransactionsTable = ({
                 </a>
                 <Copy
                   className="w-4 h-4 cursor-pointer"
-                  onClick={() => navigator.clipboard.writeText(tx.hash)}
+                  onClick={() => {
+                    navigator.clipboard.writeText(tx.hash);
+                    toast.success("Copied to clipboard");
+                  }}
                 />
               </TableCell>
               <TableCell>
@@ -101,7 +105,14 @@ const TransactionsTable = ({
               <TableCell>
                 {tx.to ? shortenAddress(tx.to) : "Contract Creation"}
               </TableCell>
-              <TableCell>{(Number(tx.value) / 1e18).toFixed(6)} POL</TableCell>
+              <TableCell className="flex items-center gap-0.5">
+                <img
+                  className="me-0.5 w-4 h-4 inline-block"
+                  src="https://amoy.polygonscan.com/assets/poly/images/svg/logos/token-light.svg"
+                  alt="Polygon PoS Chain Amoy Logo"
+                />
+                {(Number(tx.value) / 1e18).toFixed(6)} POL
+              </TableCell>
               <TableCell>
                 {((Number(tx.gasUsed) * Number(tx.gasPrice)) / 1e18).toFixed(6)}
               </TableCell>

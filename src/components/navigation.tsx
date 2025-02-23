@@ -25,7 +25,7 @@ const wallets = [
 export function Navigation() {
   const { theme } = useTheme();
   return (
-    <nav className="w-full px-6 py-4 flex items-center justify-between backdrop-blur-xl border-b border-background/10 fixed top-0 left-0 z-50 bg-background/30 rounded-b-3xl">
+    <nav className="w-full px-6 py-4 flex items-center justify-between backdrop-blur-xl border-b border-background/10 fixed top-0 left-0 z-[150] bg-background/30 rounded-b-3xl">
       <div className="flex items-center gap-2">
         <Link href="#">
           <Logo className="h-8" />

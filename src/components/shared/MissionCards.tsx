@@ -8,7 +8,6 @@ import { Leaf } from "lucide-react";
 import { Badge } from "../ui/badge";
 import { Tree } from "@prisma/client";
 import { reverseGeocode } from "@/actions/location";
-import { toast } from "sonner";
 import Link from "next/link";
 
 const Card: React.FC<Tree> = ({
@@ -39,11 +38,9 @@ const Card: React.FC<Tree> = ({
       .then((location) => {
         console.log("Location:", location);
         setTreeLocation(location);
-        toast.success("Location details fetched successfully");
       })
       .catch((err) => {
         console.error("Error reverse geocoding:", err);
-        toast.error("Error fetching location details");
       });
   }, [latitude, longitude]);
 

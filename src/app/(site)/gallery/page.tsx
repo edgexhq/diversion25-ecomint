@@ -1,7 +1,10 @@
 import React from "react";
 import MissionCards from "@/components/shared/MissionCards";
+import { getTrees } from "@/actions/tree";
 
-function Gallery() {
+
+async function Gallery() {
+  const data = await getTrees();
   return (
     <div className="w-full pt-10 md:pt-16 px-4 md:px-8 overflow-x-hidden">
       <h1 className="text-3xl sm:text-4xl md:text-5xl mt-3 sm:mt-5 text-center bg-gradient-to-b from-green-100 via-green-300 to-green-600 bg-clip-text text-transparent font-semibold">
@@ -11,7 +14,7 @@ function Gallery() {
         Each tree here stands as a living tribute to a cherished name.
       </p>
       <main className="min-h-screen mt-5">
-        <MissionCards />
+        <MissionCards cards={data} />
       </main>
     </div>
   );

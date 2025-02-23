@@ -1,9 +1,17 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { Eye, GamepadIcon, ArrowRight } from "lucide-react";
+import { DateTimePicker } from "@/components/ui/date-time";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { client } from "@/lib/client";
+import { chainId, collectionAddress, contractAddress } from "@/lib/constants";
+import { ArrowRight, Eye, GamepadIcon } from "lucide-react";
+import Link from "next/link";
+import { useEffect, useState } from "react";
+import { defineChain, NFT, toEther } from "thirdweb";
 import { DirectListing } from "thirdweb/extensions/marketplace";
 import {
   BuyDirectListingButton,
@@ -12,14 +20,6 @@ import {
   MediaRenderer,
   useActiveAccount,
 } from "thirdweb/react";
-import { client } from "@/lib/client";
-import { Badge } from "@/components/ui/badge";
-import Link from "next/link";
-import { chainId, collectionAddress, contractAddress } from "@/lib/constants";
-import { defineChain, NFT, toEther } from "thirdweb";
-import { Label } from "../ui/label";
-import { Input } from "../ui/input";
-import { DateTimePicker } from "../ui/date-time";
 
 function formatNumber(num: bigint) {
   return toEther(num);
@@ -152,10 +152,7 @@ export default function NFTDetails({
             <div className="flex items-center gap-4 mt-4">
               <Badge className="flex items-center gap-2 rounded-full">
                 <Eye className="w-4 h-4" />
-                <span>
-                  {(Math.random() * 1000).toFixed(0)}{" "}
-                  views
-                </span>
+                <span>{(Math.random() * 1000).toFixed(0)} views</span>
               </Badge>
               <Badge
                 className="flex items-center gap-2 rounded-full"

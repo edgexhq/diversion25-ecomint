@@ -63,7 +63,7 @@ const Card: React.FC<Tree> = ({
         className="absolute inset-0 rounded-[14px] bg-[radial-gradient(1000px_circle_at_var(--xPos)_var(--yPos),rgba(52,211,153,0.3),transparent_30%)] opacity-0 transition-opacity duration-150 ease-in-out"
         style={{ opacity: isHovered ? 1 : 0 }}
       />
-      <div className="flex flex-col h-full p-6 rounded-[14px] border border-[#ffffff20] transition-all duration-300 bg-gradient-to-br from-[#010101] to-[#0a0a0a] shadow-[inset_0_3px_8px_rgba(0,255,128,0.2),inset_0_-3px_8px_rgba(0,255,128,0.15)] hover:shadow-[inset_0_4px_12px_rgba(0,255,128,0.25),inset_0_-4px_12px_rgba(0,255,128,0.2)]">
+      <div className="flex flex-col h-full p-6 rounded-[14px] border border-[#ffffff20] transition-all duration-300 bg-card dark:bg-gradient-to-br dark:from-[#010101] dark:to-[#0a0a0a] shadow-[inset_0_3px_8px_rgba(0,255,128,0.2),inset_0_-3px_8px_rgba(0,255,128,0.15)] hover:shadow-[inset_0_4px_12px_rgba(0,255,128,0.25),inset_0_-4px_12px_rgba(0,255,128,0.2)]">
         <div className="flex flex-col">
           <Image
             src={imgUrl || "/tree.jpg"}
@@ -79,7 +79,7 @@ const Card: React.FC<Tree> = ({
               {species}
             </Badge>
           </div>
-          <h2 className="text-lg text-white text-center mt-5">{name}</h2>
+          <h2 className="text-lg text-center mt-5">{name}</h2>
           <p className="text-sm text-muted-foreground mt-2 text-center flex justify-center items-center">
             Location:{" "}
             <span className="line-clamp-1">
@@ -88,9 +88,8 @@ const Card: React.FC<Tree> = ({
           </p>
 
           <Button
-            className={`flex w-48 z-50 mx-auto mt-6 border border-green-900 items-center rounded-full gap-1 text-sm font-medium text-white cursor-pointer transition-all duration-300 ease-in-out bg-[#1b2d1e] hover:bg-[#083302]${
-              isHovered ? " text-[#3cff1e]" : " hover:bg-[#3cff1e20]"
-            }`}
+            variant={"outline"}
+            className="rounded-full bg-[#d3f7d9] hover:bg-[#c0f9c9] dark:hover:bg-[#121f14] dark:bg-[#1b2d1e] z-50 mt-6 w-fit px-6 mx-auto"
           >
             <Link href={`/details/${id}`}>
               Know more

@@ -12,6 +12,7 @@ import {
   StoreIcon,
   HandCoins,
   TreeDeciduous,
+  SwordsIcon,
 } from "lucide-react";
 import * as React from "react";
 
@@ -71,6 +72,16 @@ const data = {
       url: "/explore",
       icon: HandCoins,
     },
+    {
+      name: "Leaderboard",
+      url: "/leaderboard",
+      icon: SwordsIcon,
+    },
+    {
+      name: "EcoMintX",
+      url: "/ai-bot",
+      icon: Bot,
+    },
   ],
   navMain: [
     {
@@ -90,17 +101,6 @@ const data = {
       ],
     },
 
-    {
-      title: "Chatbot",
-      url: "#",
-      icon: Bot,
-      items: [
-        {
-          title: "EcoMintX",
-          url: "/ai-bot",
-        },
-      ],
-    },
     {
       title: "Documentation",
       url: "#",
@@ -148,9 +148,11 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       <SidebarHeader>
         <TeamSwitcher teams={data.teams} />
       </SidebarHeader>
-      <SidebarContent>
-        <NavPrimary projects={data.navPrimary} />
-        <NavMain items={data.navMain} />
+      <SidebarContent className="gap-0">
+        <NavPrimary projects={data.navPrimary.slice(0, 1)} />
+        <NavMain items={data.navMain.slice(0, 1)} />
+        <NavPrimary projects={data.navPrimary.slice(1)} />
+        <NavMain items={data.navMain.slice(1)} />
       </SidebarContent>
       {/* <SidebarFooter>
         <NavUser user={data.user} />

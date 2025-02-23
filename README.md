@@ -1,4 +1,4 @@
-# EcoMint
+# EcoMint [![Vercel Production Deployment](https://github.com/edgexhq/diversion25/actions/workflows/production.yml/badge.svg)](https://github.com/edgexhq/diversion25/actions/workflows/production.yml) [![Vercel Preview Deployment](https://github.com/edgexhq/diversion25/actions/workflows/preview.yml/badge.svg)](https://github.com/edgexhq/diversion25/actions/workflows/preview.yml)
 
 Starter template to build an onchain react native app with [thirdweb](https://thirdweb.com/) and [next](https://nextjs.org/).
 

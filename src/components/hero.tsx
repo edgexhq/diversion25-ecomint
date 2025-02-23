@@ -4,18 +4,37 @@ import Image from "next/image";
 import Link from "next/link";
 import tree1 from "@/assets/Majestic Tree With Intricate Branches And Lush Foliage.png";
 import tree2 from "@/assets/generated-image(9).png";
+import { cn } from "@/lib/utils";
+import { bricolage, instrumentSerif } from "@/lib/font";
 
 export function Hero() {
   return (
     <section className="relative px-6 py-32 min-h-svh flex flex-col items-center justify-center text-center">
-      <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-primary/20 bg-primary/10 text-primary mb-8 animate-fade-in">
+      <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-primary/20 bg-primary/10 cursor-pointer text-primary mb-8 animate-fade-in">
         <TreePine className="size-4" />
-        <span className="text-sm font-medium">MINT NFTs, PLANT TREES</span>
+        <p className="text-sm font-medium pointer-events-none select-none">
+          MINT NFTs, PLANT TREES
+        </p>
       </div>
 
-      <h1 className="text-4xl md:text-6xl font-bold mb-6 max-w-4xl leading-tight">
-        Transform Your Art into{" "}
-        <span className="bg-gradient-to-r from-emerald-400 to-primary text-transparent bg-clip-text">
+      <h1
+        className={cn(
+          "text-4xl md:text-6xl font-semibold mb-6 max-w-4xl leading-tight cursor-default",
+          bricolage.className
+        )}
+      >
+        Transform Your{" "}
+        <span
+          className={cn(
+            instrumentSerif.className,
+            "text-5xl relative md:text-7xl bg-gradient-to-r from-purple-500 via-primary to-purple-500 bg-clip-text text-transparent animate-bg-pan italic group tracking-tight"
+          )}
+        >
+          Art
+          <div className="absolute border top-0 left-0 size-full opacity-40 blur-3xl bg-purple-400 group-hover:opacity-80 transition-all duration-500 "></div>
+        </span>{" "}
+        into{" "}
+        <span className="bg-gradient-to-l from-emerald-400/60 via-emerald-300 to-primary text-transparent bg-clip-text">
           Environmental Impact
         </span>
       </h1>

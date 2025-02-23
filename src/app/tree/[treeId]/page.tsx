@@ -1,5 +1,6 @@
 import { getTree } from "@/actions/form";
-import Treecertificate from "@/components/Treecertificate";
+import Certificate from "@/components/new-certificate";
+import { Suspense } from "react";
 
 export default async function TreeCertificate({
   params,
@@ -18,8 +19,10 @@ export default async function TreeCertificate({
   }
 
   return (
-    <div className="min-h-screen bg-white p-4 md:p-8">
-      <Treecertificate details={treedetails.data} />
+    <div className="min-h-screen">
+      <Suspense>
+        <Certificate details={treedetails.data} />
+      </Suspense>
     </div>
   );
 }

@@ -83,7 +83,7 @@ const TreeBanner = () => {
                 {data.displayValue.slice(0, 6)} {data.symbol}
               </div>
             </div>
-            <Badge className="rounded-full">Hi</Badge>
+            <Badge className="rounded-full">Polygon Network</Badge>
           </div>
         </CardContent>
       </Card>

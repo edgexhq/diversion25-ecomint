@@ -118,8 +118,8 @@ export function TreePlantingStep({
           <Input
             id="name"
             name="name"
+            readOnly
             value={formData.tree.name}
-            onChange={handleInputChange}
             required
           />
         </div>
@@ -152,7 +152,7 @@ export function TreePlantingStep({
             id="userWalletAddress"
             name="userWalletAddress"
             value={formData.tree.userWalletAddress}
-            onChange={handleInputChange}
+            readOnly
             required
           />
         </div>

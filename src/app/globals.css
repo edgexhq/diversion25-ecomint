@@ -8,16 +8,16 @@
   --background-end-rgb: 255, 255, 255;
 }
 
-.leaf-glow{
-  filter:drop-shadow(0 0 10px lime);
+.leaf-glow {
+  filter: drop-shadow(0 0 10px lime);
 }
 
-.dark.sprout-glow{
-  filter:drop-shadow(0 0 10px green);
+.dark.sprout-glow {
+  filter: drop-shadow(0 0 10px green);
 }
 
-.sprout-glow{
-  filter:drop-shadow(0 0 10px rgb(4, 221, 4));
+.sprout-glow {
+  filter: drop-shadow(0 0 10px rgb(4, 221, 4));
 }
 
 @media (prefers-color-scheme: dark) {
@@ -119,4 +119,17 @@
 ::-webkit-scrollbar-thumb {
   background: hsla(var(--muted));
   border-radius: 1rem;
+}
+
+.animate-bg-pan {
+  animation: bg-pan 1.5s linear infinite;
+}
+
+@keyframes bg-pan {
+  0% {
+    background-position: 0% 0%;
+  }
+  100% {
+    background-position: 200% 200%;
+  }
 }

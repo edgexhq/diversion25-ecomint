@@ -20,6 +20,9 @@ import {
 import { client } from "@/lib/client";
 import { ConnectButton } from "thirdweb/react";
 import { createWallet, inAppWallet } from "thirdweb/wallets";
+import { defineChain } from "thirdweb";
+import { chainId } from "@/lib/constants";
+import { useTheme } from "next-themes";
 
 const wallets = [
   inAppWallet({
@@ -38,6 +41,7 @@ export default function AppLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const { theme } = useTheme();
   return (
     <SidebarProvider suppressHydrationWarning>
       <AppSidebar />
@@ -63,19 +67,24 @@ export default function AppLayout({
               <ConnectButton
                 client={client}
                 wallets={wallets}
-                theme={darkTheme({
-                  colors: {
-                    accentText: "hsl(158.1 ,64.4% ,50%)",
-                    accentButtonBg: "hsl(118, 100%, 63%)",
-                    primaryButtonBg: "hsl(142, 76%, 36%)",
-                    accentButtonText: "hsl(0, 0%, 0%)",
-                  },
-                })}
+                theme={
+                  theme === "dark"
+                    ? darkTheme({
+                        colors: {
+                          accentText: "hsl(158.1 ,64.4% ,50%)",
+                          accentButtonBg: "hsl(118, 100%, 63%)",
+                          primaryButtonBg: "hsl(158.1 ,64.4%, 50%)",
+                          accentButtonText: "hsl(0, 0%, 0%)",
+                        },
+                      })
+                    : "light"
+                }
                 connectModal={{
-                  size: "compact",
+                  size: "wide",
                   title: "Register to EcoMint",
                   showThirdwebBranding: false,
                 }}
+                chain={defineChain(chainId)}
               />
               <ThemeToggleBtn />
             </div>

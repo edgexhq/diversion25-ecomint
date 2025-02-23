@@ -75,6 +75,10 @@ const config: Config = {
         },
       },
       keyframes: {
+        "logo-cloud": {
+          from: { transform: "translateX(0)" },
+          to: { transform: "translateX(calc(-100% - 4rem))" },
+        },
         "accordion-down": {
           from: {
             height: "0",
@@ -95,6 +99,7 @@ const config: Config = {
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
+        "logo-cloud": "logo-cloud 30s linear infinite",
       },
     },
   },

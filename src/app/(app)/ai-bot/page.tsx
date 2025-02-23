@@ -89,7 +89,7 @@ const Chatbox = () => {
             />
           </div>
         )}
-        {!isLoading && (
+        {isLoading && (
           <div className="flex items-center gap-2 px-10">
             <span className="animate-bg-pan bg-gradient-to-r from-muted/50 via-foreground to-muted/50 bg-[length:200%_200%] bg-clip-text text-transparent">
               Generating...

@@ -21,34 +21,38 @@ const partners = [
   },
 ];
 
-export function Partners() {
+const AnimatedLogoCloud = () => {
   return (
-    <section className="px-6 py-24 border-t border-white/10">
-      <div className="max-w-7xl mx-auto">
-        <h3 className="text-center text-2xl font-semibold mb-20">
-          <span className="text-primary">Trusted by</span> Leading Environmental
-          Organizations
-        </h3>
-        <div className="flex items-center justify-between gap-8 transition-opacity overflow-x-auto pb-4">
-          {partners.map((partner, i) => (
-            <div
-              key={i}
-              className="flex flex-col items-center gap-2 min-w-[160px]"
-            >
-              <img
-                src={partner.logo}
-                alt={partner.name}
-                width={80}
-                height={20}
-                className="rounded-full"
-              />
-              <span className="text-sm text-muted-foreground">
-                {partner.name}
-              </span>
-            </div>
-          ))}
+    <div className="w-full py-12">
+      <div className="mx-auto w-full px-4 md:px-8">
+        <div
+          className="group relative mt-6 flex gap-6 overflow-hidden p-2"
+          style={{
+            maskImage:
+              "linear-gradient(to left, transparent 0%, black 20%, black 80%, transparent 95%)",
+          }}
+        >
+          {Array(5)
+            .fill(null)
+            .map((index) => (
+              <div
+                key={index}
+                className="flex shrink-0 animate-logo-cloud flex-row justify-around gap-6"
+              >
+                {partners.map((partner, key) => (
+                  <img
+                    key={key}
+                    src={partner.logo}
+                    className="h-10 w-28 px-2"
+                    alt={`${partner.name}`}
+                  />
+                ))}
+              </div>
+            ))}
         </div>
       </div>
-    </section>
+    </div>
   );
-}
+};
+
+export default AnimatedLogoCloud;

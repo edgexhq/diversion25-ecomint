@@ -1,8 +1,9 @@
 import { Features } from "@/components/features";
 import { Hero } from "@/components/hero";
 import { Navigation } from "@/components/navigation";
-import { Partners } from "@/components/partners";
+import AnimatedLogoCloud from "@/components/partners";
 import RegisterForTree from "@/components/RegisterForTree";
+import World from "@/components/world";
 
 export default function Home() {
   return (
@@ -13,8 +14,9 @@ export default function Home() {
         <Navigation />
         <Hero />
         <RegisterForTree />
+        <World />
         <Features />
-        <Partners />
+        <AnimatedLogoCloud />
       </div>
       <footer className="relative z-10 py-8 mt-20 border-t border-gray-200 dark:border-gray-800">
         <div className="container px-4 max-w-7xl mx-auto">

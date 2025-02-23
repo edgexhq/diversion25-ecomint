@@ -39,6 +39,9 @@ export function Navigation() {
         <Link href="#features" className="hover:underline">
           Features
         </Link>
+        <Link href="/gallery" className="hover:underline">
+          Gallery
+        </Link>
         <Link href="#" className="hover:underline">
           Impact
         </Link>

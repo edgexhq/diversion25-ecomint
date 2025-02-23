@@ -1,9 +1,9 @@
+/* eslint-disable @next/next/no-img-element */
 "use client";
 
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTrigger,
@@ -34,6 +34,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Badge } from "../ui/badge";
 import { addUserDonation } from "@/actions/donate";
+import { DialogTitle } from "@radix-ui/react-dialog";
 
 interface OrgProps {
   id: string;
@@ -50,7 +51,7 @@ export default function OrgCard({ org }: { org: OrgProps }) {
   const account = useActiveAccount();
   const [name, setName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
-  const [price, setPrice] = useState<string>("0");
+  const [price, setPrice] = useState<string>();
   const [loading, setLoading] = useState(false);
 
   const [isOpen, setIsOpen] = useState(false);
@@ -64,7 +65,7 @@ export default function OrgCard({ org }: { org: OrgProps }) {
     chain: defineChain(chainId),
     client: client,
     to: org.wallet,
-    value: BigInt(Math.floor(parseFloat(price) * 1e18)),
+    value: price ? BigInt(Math.floor(parseFloat(price) * 1e18)) : BigInt(0),
   });
 
   const handleDonate = async () => {
@@ -76,7 +77,9 @@ export default function OrgCard({ org }: { org: OrgProps }) {
       const newTransaction = await createTransaction({
         name,
         email,
-        amount: toEther(BigInt(Math.floor(parseFloat(price) * 1e18))),
+        amount: toEther(
+          price ? BigInt(Math.floor(parseFloat(price) * 1e18)) : BigInt(0)
+        ),
         orgId: org.id,
         hash: result.transactionHash as string,
         from: account.address,
@@ -86,7 +89,7 @@ export default function OrgCard({ org }: { org: OrgProps }) {
       setOpen(false);
 
       const leaderboard = await addUserDonation({
-        amountDonated: parseFloat(price),
+        amountDonated: parseFloat(price || "0"),
         wallet: account.address,
       });
 
@@ -127,18 +130,17 @@ export default function OrgCard({ org }: { org: OrgProps }) {
         </div>
 
         <Dialog open={open} onOpenChange={setOpen}>
-          <DialogTrigger>
-            <Button onClick={() => setOpen(true)}>Donate </Button>
+          <DialogTrigger asChild>
+            <Button onClick={() => setOpen(true)}>Donate</Button>
           </DialogTrigger>
           <DialogContent>
             <DialogHeader>
-              <h1 className="text-2xl font-bold">{org.name}</h1>
-              <p className="text-gray-500 text-sm">
-                At
-                {org.address}
-              </p>
+              <DialogTitle className="text-2xl font-bold">
+                Donate to {org.name}
+              </DialogTitle>
+              <p className="text-gray-500 text-sm">at {org.address}</p>
             </DialogHeader>
-            <DialogDescription>
+            <div>
               <div className="space-y-6">
                 <div className="space-y-2">
                   <Label htmlFor="amount">Amount</Label>
@@ -168,9 +170,9 @@ export default function OrgCard({ org }: { org: OrgProps }) {
                   />
                 </div>
               </div>
-            </DialogDescription>
+            </div>
             <DialogFooter className="flex flex-row items-center justify-between">
-              <Button onClick={handleDonate}>
+              <Button type="submit" onClick={handleDonate}>
                 Donate
                 {loading && <Loader className="w-6 h-6 animate-spin" />}
               </Button>

@@ -80,7 +80,9 @@ export default function NFTDetails({
     return () => clearTimeout(interval);
   }, [listing, listing?.endTimeInSeconds]);
 
-  const start = new Date(Number(listing?.startTimeInSeconds) * 1000).toLocaleString()
+  const start = new Date(
+    Number(listing?.startTimeInSeconds) * 1000
+  ).toLocaleString();
 
   if (type === "nft" && nft?.owner !== account?.address) {
     return (
@@ -150,7 +152,10 @@ export default function NFTDetails({
             <div className="flex items-center gap-4 mt-4">
               <Badge className="flex items-center gap-2 rounded-full">
                 <Eye className="w-4 h-4" />
-                <span>101 views</span>
+                <span>
+                  {(Math.random() * 1000).toFixed(0)}{" "}
+                  views
+                </span>
               </Badge>
               <Badge
                 className="flex items-center gap-2 rounded-full"

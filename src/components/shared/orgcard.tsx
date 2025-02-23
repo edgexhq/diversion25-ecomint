@@ -33,6 +33,7 @@ import {
 import Link from "next/link";
 import Image from "next/image";
 import { Badge } from "../ui/badge";
+import { addUserDonation } from "@/actions/donate";
 
 interface OrgProps {
   id: string;
@@ -83,6 +84,14 @@ export default function OrgCard({ org }: { org: OrgProps }) {
       console.log(newTransaction);
       setLoading(false);
       setOpen(false);
+
+      const leaderboard = await addUserDonation({
+        amountDonated: parseFloat(price),
+        wallet: account.address,
+      });
+
+      console.log(leaderboard);
+
       confetti({
         particleCount: 100,
         spread: 70,
@@ -104,10 +113,7 @@ export default function OrgCard({ org }: { org: OrgProps }) {
         />
         <div>
           <h1 className="text-2xl font-bold">{org.name}</h1>
-          <p className="text-gray-500 text-sm">
-            At {" "}
-            {org.address}
-          </p>
+          <p className="text-gray-500 text-sm">At {org.address}</p>
         </div>
       </div>
       <div className="p-6 pt-4 items-end">
@@ -201,15 +207,20 @@ export default function OrgCard({ org }: { org: OrgProps }) {
             <div className="space-y-4 mb-4">
               <h1 className="text-4xl font-bold text-center">Thank you!</h1>
               <p className="text-center text-gray-400 max-w-md mx-auto">
-                Your donation has been successfully processed and your XP has been updated
+                Your donation has been successfully processed and your XP has
+                been updated
               </p>
 
               {/* Current Level */}
               <div className="flex flex-row items-center justify-center gap-4">
                 <h1 className="text-2xl font-bold">Currently at: </h1>
-                <Badge variant="default" className="text-white h-6 px-6 py-2 text-md">Level 1</Badge>
+                <Badge
+                  variant="default"
+                  className="text-white h-6 px-6 py-2 text-md"
+                >
+                  Level 1
+                </Badge>
               </div>
-
             </div>
 
             {/* Download Files Section */}

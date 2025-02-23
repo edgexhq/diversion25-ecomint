@@ -39,7 +39,7 @@ export default function CreateNFT() {
       const res = await fetch(
         `${apiUrl}?prompt=${encodeURIComponent(
           aiPrompt
-        )}&model=flux-schnell`,
+        )}&model=sdxl`,
         {
           method: "GET",
         }
@@ -53,7 +53,6 @@ export default function CreateNFT() {
       const url = URL.createObjectURL(blob);
       setImage(url);
       const uuid = nanoid();
-      console.log(uuid);
       setCustomQR(uuid);
     } catch (error) {
       console.error(error);

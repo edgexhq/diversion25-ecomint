@@ -114,7 +114,6 @@ export default function StepWiseForm() {
       }
     } catch (error) {
       console.error(error);
-      toast.error("Failed to plant tree");
     } finally {
       setIsLoading(false);
     }
@@ -125,7 +124,7 @@ export default function StepWiseForm() {
       <Card>
         <CardHeader>
           <CardTitle className="mb-8">Tree Planting Form</CardTitle>
-          <div className="flex gap-4 items-center my-4">
+          <div className="flex gap-4 items-center my-4 justify-center">
             {steps.map((step, index) => (
               <div
                 key={step}
@@ -182,7 +181,7 @@ export default function StepWiseForm() {
             >
               Previous
             </Button>
-            {currentStep < steps.length - 1 ? (
+            {currentStep === 0 ? (
               <Button type="button" onClick={handleNext}>
                 Next
               </Button>

@@ -58,7 +58,6 @@ enum Status {
 model User {
   id            String   @id @default(auto()) @map("_id") @db.ObjectId
   wallet        String   @unique
-  email         String   @unique
-  amountDonated String
+  amountDonated Float    @default(0)
   rewards       String[]
 }

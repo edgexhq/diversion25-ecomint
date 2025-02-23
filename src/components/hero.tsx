@@ -31,7 +31,7 @@ export function Hero() {
           )}
         >
           Art
-          <div className="absolute border top-0 left-0 size-full opacity-40 blur-3xl bg-purple-400 group-hover:opacity-80 transition-all duration-500 "></div>
+          <div className="absolute border top-0 left-0 size-full opacity-70 blur-3xl bg-purple-400 group-hover:opacity-90 transition-all duration-500 "></div>
         </span>{" "}
         into{" "}
         <span className="bg-gradient-to-l from-emerald-400/60 via-emerald-300 to-primary text-transparent bg-clip-text">

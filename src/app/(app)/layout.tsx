@@ -23,6 +23,7 @@ import { createWallet, inAppWallet } from "thirdweb/wallets";
 import { defineChain } from "thirdweb";
 import { chainId } from "@/lib/constants";
 import { useTheme } from "next-themes";
+import { usePathname } from "next/navigation";
 
 const wallets = [
   inAppWallet({
@@ -36,12 +37,26 @@ const wallets = [
   createWallet("com.binance"),
 ];
 
+const pathNames = [
+  { name: "", url: "/dashboard" },
+  { name: "Marketplace", url: "/marketplace" },
+  { name: "Transactions", url: "/transactions" },
+  { name: "Donate", url: "/explore" },
+  { name: "Leaderboard", url: "/leaderboard" },
+  { name: "EcoMintX", url: "/ai-bot" },
+  { name: "NFT", url: "/owned-nft" },
+  { name: "Mint", url: "/create-nft" },
+  { name: "Introduction", url: "/guide" },
+  { name: "Get Started", url: "/guide" },
+];
+
 export default function AppLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   const { theme } = useTheme();
+  const pathname = usePathname();
   return (
     <SidebarProvider suppressHydrationWarning>
       <AppSidebar />
@@ -54,11 +69,13 @@ export default function AppLayout({
               <Breadcrumb>
                 <BreadcrumbList>
                   <BreadcrumbItem className="hidden md:block">
-                    <BreadcrumbLink href="/">Home</BreadcrumbLink>
+                    <BreadcrumbLink href="/dashboard">Dashboard</BreadcrumbLink>
                   </BreadcrumbItem>
                   <BreadcrumbSeparator className="hidden md:block" />
                   <BreadcrumbItem>
-                    <BreadcrumbPage>Dashboard</BreadcrumbPage>
+                    <BreadcrumbPage>
+                      {pathNames.find((path) => path.url === pathname)?.name}
+                    </BreadcrumbPage>
                   </BreadcrumbItem>
                 </BreadcrumbList>
               </Breadcrumb>

@@ -129,7 +129,7 @@ const Cobe = () => {
               (focusRef.current = locationToAngles(
                 parseFloat(tree.latitude),
                 parseFloat(tree.longitude)
-              ))
+              ) as [number, number])
             }
           >
             🌳 {tree.name}

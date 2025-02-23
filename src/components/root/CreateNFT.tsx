@@ -12,7 +12,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import { client } from "@/lib/client";
 import { upload } from "thirdweb/storage";
-import { nanoid } from 'nanoid';
+import { nanoid } from "nanoid";
 import { useActiveAccount } from "thirdweb/react";
 import html2canvas from "html2canvas";
 
@@ -39,7 +39,7 @@ export default function CreateNFT() {
       const res = await fetch(
         `${apiUrl}?prompt=${encodeURIComponent(
           aiPrompt
-        )}&model=sdxl`,
+        )}&model=sdxl&strength=0.8&guidance=7`,
         {
           method: "GET",
         }

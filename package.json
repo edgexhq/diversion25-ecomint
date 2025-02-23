@@ -8,7 +8,7 @@
     "start": "next start",
     "lint": "next lint",
     "sync": "git pull && bun i",
-    "postinstall": "prisma generate"
+    "postinstall": "prisma generate --no-hints"
   },
   "dependencies": {
     "@ai-sdk/google": "^1.1.10",

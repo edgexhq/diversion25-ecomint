@@ -1,21 +1,24 @@
 "use client";
 
 import type React from "react";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
-// import FireAnimation from "@/components/shared/FireAnimation";
-import { Leaf, MapPin } from "lucide-react";
+import { Leaf } from "lucide-react";
 import { Badge } from "../ui/badge";
+import { Tree } from "@prisma/client";
+import { reverseGeocode } from "@/actions/location";
+import { toast } from "sonner";
+import Link from "next/link";
 
-interface CardProps {
-  species: string;
-  title: string;
-  imageSrc: string;
-  location: string;
-}
-
-const Card: React.FC<CardProps> = ({ title, imageSrc }) => {
+const Card: React.FC<Tree> = ({
+  id,
+  name,
+  imgUrl,
+  latitude,
+  longitude,
+  species,
+}) => {
   const [isHovered, setIsHovered] = useState(false);
   const cardRef = useRef<HTMLDivElement>(null);
 
@@ -28,6 +31,21 @@ const Card: React.FC<CardProps> = ({ title, imageSrc }) => {
       cardRef.current.style.setProperty("--yPos", `${y}px`);
     }
   };
+
+  const [treeLocation, setTreeLocation] = useState<string | undefined>();
+
+  useEffect(() => {
+    reverseGeocode(parseFloat(latitude), parseFloat(longitude))
+      .then((location) => {
+        console.log("Location:", location);
+        setTreeLocation(location);
+        toast.success("Location details fetched successfully");
+      })
+      .catch((err) => {
+        console.error("Error reverse geocoding:", err);
+        toast.error("Error fetching location details");
+      });
+  }, [latitude, longitude]);
 
   return (
     <div
@@ -48,8 +66,8 @@ const Card: React.FC<CardProps> = ({ title, imageSrc }) => {
       <div className="flex flex-col h-full p-6 rounded-[14px] border border-[#ffffff20] transition-all duration-300 bg-gradient-to-br from-[#010101] to-[#0a0a0a] shadow-[inset_0_3px_8px_rgba(0,255,128,0.2),inset_0_-3px_8px_rgba(0,255,128,0.15)] hover:shadow-[inset_0_4px_12px_rgba(0,255,128,0.25),inset_0_-4px_12px_rgba(0,255,128,0.2)]">
         <div className="flex flex-col">
           <Image
-            src={imageSrc || "/tree.jpg"}
-            alt={title}
+            src={imgUrl || "/tree.jpg"}
+            alt={name}
             className="w-full h-[180px] object-cover rounded-md"
             width={140}
             height={140}
@@ -58,21 +76,26 @@ const Card: React.FC<CardProps> = ({ title, imageSrc }) => {
         <div className="flex flex-col">
           <div className="text-muted-foreground text-[11px] mt-2">
             <Badge className="rounded-full text-[11px] border border-green-700 bg-transparent text-muted-foreground">
-              Species
+              {species}
             </Badge>
           </div>
-          <h2 className="text-lg text-white text-center mt-5">{title}</h2>
+          <h2 className="text-lg text-white text-center mt-5">{name}</h2>
           <p className="text-sm text-muted-foreground mt-2 text-center flex justify-center items-center">
-            <MapPin className="w-4 h-4 inline-block mr-1" />
-            Location: Hyderabad
+            Location:{" "}
+            <span className="line-clamp-1">
+              {treeLocation ? treeLocation : "Fetching location details..."}
+            </span>
           </p>
+
           <Button
             className={`flex w-48 z-50 mx-auto mt-6 border border-green-900 items-center rounded-full gap-1 text-sm font-medium text-white cursor-pointer transition-all duration-300 ease-in-out bg-[#1b2d1e] hover:bg-[#083302]${
               isHovered ? " text-[#3cff1e]" : " hover:bg-[#3cff1e20]"
             }`}
           >
-            Know more
-            {/* <FireAnimation /> */}
+            <Link href={`/details/${id}`}>
+              Know more
+              {/* <FireAnimation /> */}
+            </Link>
             <Leaf className="fill-lime-400 stroke-lime-400 ml-4 leaf-glow" />
           </Button>
         </div>
@@ -81,41 +104,8 @@ const Card: React.FC<CardProps> = ({ title, imageSrc }) => {
   );
 };
 
-const MissionCards: React.FC = () => {
+const MissionCards = ({ cards }: { cards: Tree[] }) => {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
-
-  const cards: CardProps[] = [
-    {
-      species: "Mission 1/3",
-      title: "Physical Missions",
-      location: "Hyderabad",
-      imageSrc: "/tree.jpg",
-    },
-    {
-      species: "Mission 2/3",
-      title: "Virtual Missions",
-      location: "Hyderabad",
-      imageSrc: "/tree.jpg",
-    },
-    {
-      species: "Mission 3/3",
-      title: "On Demand Missions",
-      location: "Hyderabad",
-      imageSrc: "/tree.jpg",
-    },
-    {
-      species: "Mission 3/3",
-      title: "On Demand Missions",
-      location: "Hyderabad",
-      imageSrc: "/tree.jpg",
-    },
-    {
-      species: "Mission 3/3",
-      title: "On Demand Missions",
-      location: "Hyderabad",
-      imageSrc: "/tree.jpg",
-    },
-  ];
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-16 justify-center my-[100px] justify-items-center max-w-7xl mx-auto">

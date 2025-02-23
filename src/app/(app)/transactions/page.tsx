@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 "use client";
 
 import { Badge } from "@/components/ui/badge";
@@ -8,6 +9,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { shortenAddress } from "@/lib/utils";
 import { Copy } from "lucide-react";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
@@ -18,9 +20,6 @@ const getTransactionType = (method: string) => {
   if (method.includes("createListing")) return "Create Listing";
   return "Transfer";
 };
-
-const shortenAddress = (address: string) =>
-  `${address.slice(0, 6)}...${address.slice(-4)}`;
 
 // Calculate the age of the transaction in hours and minutes ago from the current time in local timezone if not the same day as the transaction then it will display the days ago
 const calculateAge = (timestamp: string) => {

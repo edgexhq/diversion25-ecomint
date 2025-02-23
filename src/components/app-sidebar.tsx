@@ -7,12 +7,12 @@ import {
   Command,
   FrameIcon,
   LayoutGridIcon,
-  Settings2,
   SquareTerminal,
   StoreIcon,
   HandCoins,
   TreeDeciduous,
   SwordsIcon,
+  AtomIcon,
 } from "lucide-react";
 import * as React from "react";
 
@@ -56,7 +56,11 @@ const data = {
       url: "/dashboard",
       icon: LayoutGridIcon,
     },
-
+    {
+      name: "Explore",
+      url: "/explore",
+      icon: AtomIcon,
+    },
     {
       name: "Marketplace",
       url: "/marketplace",
@@ -76,6 +80,11 @@ const data = {
       name: "Leaderboard",
       url: "/leaderboard",
       icon: SwordsIcon,
+    },
+    {
+      name: "Guide",
+      url: "/guide",
+      icon: BookOpen,
     },
     {
       name: "EcoMintX",
@@ -101,44 +110,44 @@ const data = {
       ],
     },
 
-    {
-      title: "Documentation",
-      url: "#",
-      icon: BookOpen,
-      items: [
-        {
-          title: "Introduction",
-          url: "/guide",
-        },
-        {
-          title: "Get Started",
-          url: "/guide",
-        },
-      ],
-    },
-    {
-      title: "Settings",
-      url: "#",
-      icon: Settings2,
-      items: [
-        {
-          title: "General",
-          url: "#",
-        },
-        {
-          title: "Team",
-          url: "#",
-        },
-        {
-          title: "Billing",
-          url: "#",
-        },
-        {
-          title: "Limits",
-          url: "#",
-        },
-      ],
-    },
+    // {
+    //   title: "Documentation",
+    //   url: "#",
+    //   icon: BookOpen,
+    //   items: [
+    //     {
+    //       title: "Introduction",
+    //       url: "/guide",
+    //     },
+    //     {
+    //       title: "Get Started",
+    //       url: "/guide",
+    //     },
+    //   ],
+    // },
+    // {
+    //   title: "Settings",
+    //   url: "#",
+    //   icon: Settings2,
+    //   items: [
+    //     {
+    //       title: "General",
+    //       url: "#",
+    //     },
+    //     {
+    //       title: "Team",
+    //       url: "#",
+    //     },
+    //     {
+    //       title: "Billing",
+    //       url: "#",
+    //     },
+    //     {
+    //       title: "Limits",
+    //       url: "#",
+    //     },
+    //   ],
+    // },
   ],
 };
 

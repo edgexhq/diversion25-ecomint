@@ -63,7 +63,7 @@ export default function LeaderboardTopSection({ players }: LeaderboardProps) {
 
   return (
     <div className="w-full max-w-2xl mx-auto p-8">
-      <div className="relative h-[320px] flex items-end justify-center gap-4">
+      <div className="relative flex items-end justify-center gap-10 overflow-y-hidden pt-10">
         {podiumOrder.map((rank) => {
           const player = players.find((p) => p.rank === rank);
           if (!player) return null;
@@ -71,7 +71,7 @@ export default function LeaderboardTopSection({ players }: LeaderboardProps) {
           const isWinner = rank === 1;
           const podiumHeight =
             rank === 1 ? "h-[180px]" : rank === 2 ? "h-[140px]" : "h-[100px]";
-          const delay = rank === 1 ? 0.2 : rank === 2 ? 0 : 0.4;
+          const delay = rank === 1 ? 0 : rank === 2 ? 0.5 : 1;
           const tierStyles = getTierStyles(rank);
 
           return (

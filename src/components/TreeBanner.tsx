@@ -1,4 +1,5 @@
 "use client";
+
 import { Loader, Sparkles, TreePalm, TreePine, Wallet } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
